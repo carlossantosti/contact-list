@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Contacts</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+	<div class="container">
+		<div class="col-md-12 mt-3">
+			<h3>My Contact List</h3>
+		</div>
+		
+		<!-- Form to search and a form to upload data -->
+		<div class="col-md-12 mt-3">
+			<!-- Field: search; Buttons: Search and DeleteAll -->
+			<form method="GET" th:action="@{/search}">
+				<div class="d-flex align-items-center justify-content-between" th:if="${!contacts.empty || (search == null ? false : search)}">
+					
+					<input type="text" class="form-control mr-2" th:name="search-text">
+
+					<button class="btn btn-primary mr-2">Search</button>
+				
+					<a class="btn btn-danger" th:href="@{/delete-all}"
+						th:classappend="${contacts.empty} ? 'disabled' : ''">
+						Delete All</a>
+				</div>
+			</form>
+			
+			<!-- Upload CSV File to the application -->
+			<div class="mt-4" th:if="${contacts.empty && (search == null ? true : !search)}">
+				<form method="POST" th:action="@{/upload-contacts}" enctype="multipart/form-data">
+					<div class="d-flex align-items-center justify-content-around">
+						<label class="w-25" for="file">Select a CSV file:</label>
+						<input type="file" name="file" class="form-control-file" id="file" accept=".csv">
+						<button type="submit" class="btn btn-primary">Import Contacts</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<!-- Alert message error -->
+		<div class="alert alert-danger margin-space mt-3" role="alert"
+			th:if="${error}">
+			<strong>Error:</strong> <span th:text="${message}"></span>
+		</div>
+		<!-- Alert message success -->
+		<div class="alert alert-success margin-space mt-3" role="alert"
+			th:if="${error == null} ? false : ${!error}">
+			<strong>Contacts saved successfully!</strong>
+		</div>
+		
+		<!-- Pagination -->
+		<div class="col-md-12 mt-3" th:if="${contacts.totalPages > 0}">
+	        <nav aria-label="Pagination">
+			  <ul class="pagination justify-content-center pagination-menu">
+			    <li class="page-item" th:class="${pageNumber == contacts.number + 1} ? page-link-active" th:each="pageNumber : ${pageNumbers}">
+			    	<a class="page-link" th:if="${(search == null ? true : !search)}" th:href="@{/(size=${contacts.size}, page=${pageNumber})}" th:text=${pageNumber}></a>
+			    	
+			    	<a class="page-link" th:if="${(search == null ? false : search)}" th:href="@{/search(size=${contacts.size}, page=${pageNumber}, search-text=${searchText})}" th:text=${pageNumber}></a>
+			    </li>
+			  </ul>
+			</nav>
+		</div>
+		
+		<!-- Table listing contacts -->
+		<div class="col-md-12 mt-4">
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="w-15">Imagem</th>
+						<th>Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${contacts.empty}">
+						<td colspan="2">No contacts available</td>
+					</tr>
+					<tr th:each="contact : ${contacts.content}">
+						<td>
+							<img th:src="${contact.url}" th:alt="${contact.url}" th:alt-title="${contact.name}" class="rounded-circle image">
+						</td>
+						<td><span th:text="${contact.name}">Name</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

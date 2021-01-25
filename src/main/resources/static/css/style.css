@@ -1,0 +1,22 @@
+.image {
+	width: 60px;
+	height: 60px;
+}
+
+.margin-space {
+	margin-left: 15px !important;
+	margin-right: 15px !important;
+}
+
+.pagination-menu {
+	flex-wrap: wrap;
+}
+
+.page-link-active {
+	color: black !important;
+	background-color: gainsboro !important;
+}
+
+.page-link {
+	background-color: transparent !important;
+}
