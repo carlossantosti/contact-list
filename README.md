@@ -1,5 +1,11 @@
 # Contact List
 
+### Application Info:
+1. Java 8
+2. Spring Boot
+3. Spring Data JPA
+4. Thymeleaf
+
 ### To run the application:
 
 1. Create a MySQL Database named **contacts**
