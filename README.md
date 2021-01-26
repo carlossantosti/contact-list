@@ -1,6 +1,6 @@
 # Contact List
 
-### Application Info:
+### Application info:
 1. Java 8
 2. Spring Boot
 3. Spring Data JPA
